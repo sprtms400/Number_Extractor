@@ -15,8 +15,10 @@ def read_config():
 def reqeustAssetInfo(protocol, server_url, port, endpoint, photoId):
     full_url = f'{protocol}://{server_url}:{port}/{endpoint}/{photoId}'
     response = requests.get(full_url)
+    print('full_url:', full_url)
+    print('response:', response)
     return response.json()
-    
+
 def requestAessetFromGCS(dirPath, photoId):
     full_url = f'{GCS_STORAGE_URL}/{GCS_BUCKET_NAME}/{dirPath}/{photoId}'
     print('full_url:', full_url)

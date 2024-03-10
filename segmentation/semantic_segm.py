@@ -47,11 +47,20 @@ def extract_numberplate(origianl_image, tmp_dir):
             coord_x = center_coord_x - box_width // 2
             coord_y = center_coord_y - box_height // 2
             number_plate_image = image_source[coord_y:coord_y+box_height, coord_x:coord_x+box_width]
-            
+    
+    cutted_path = None
+    annotated_path = None
+    number_path = None
+    cropped_path = None
+    
     if number_plate_image is not None:
-        cv2.imwrite(tmp_dir + "/annotatedImage_image.jpg", annotatedImage)
         cv2.imwrite(tmp_dir + "/number_plate_image.jpg", number_plate_image)
         cv2.imwrite(tmp_dir + "/cropped_number_plate_image.jpg", cutter.crop_edge_image(number_plate_image, CROP_RATIO))
+        cutted_path = "/cutted_image.jpg"
+        number_path = "/number_plate_image.jpg"
+        cropped_path = "/cropped_number_plate_image.jpg"
     else:
         print("Number plate not found.")
-        return None
+    cv2.imwrite(tmp_dir + "/annotated_image.jpg", annotatedImage)
+    annotated_path = "/annotated_image.jpg"
+    return cutted_path, annotated_path, number_path, cropped_path

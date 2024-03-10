@@ -23,8 +23,10 @@ def start_getting_messages():
     channel.start_consuming()
 
 def get_messages_once():
-    channel = connect_to_queue()
-    queue = read_config()["rabbitmq"]["queue"]
+    config = read_config()
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+    queue = config["rabbitmq"]["queue"]
     
     method_frame, header_frame, body = channel.basic_get(queue, auto_ack=True)
     if method_frame:

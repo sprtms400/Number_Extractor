@@ -5,6 +5,8 @@
         "port" : "3000"
     },
     "endpoints": {
-        "photo": "photo"
+        "photo": "photo",
+        "getPresignedURL": "photo/getPresignedUrl",
+        "updateNumberPlate": "photo/{photoID}/updateNumberPlate"
     }
 }
