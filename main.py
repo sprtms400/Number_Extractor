@@ -4,24 +4,22 @@ from utils import asset_getter, task_collector, garbage_cleaner, uploader
 from pre_processing import image_reader
 from segmentation.semantic_segm import extract_numberplate
 from ocr.number_extractor import extract_number_easyocr, extract_number_easyocr_thresh
+import time
 
 TMP_DIR = 'tmp'
 
 if __name__ == "__main__":
+    i = 0
     while True:
+        time.sleep(2)
+        i+=1
         photoId_bytes = task_collector.get_messages_once()
-        print('photoId_bytes:', photoId_bytes)
         photoId = photoId_bytes.decode('utf-8')
-        print('photoId:', photoId)
+        print(f'[{i}] photoID : {photoId}')
         if (photoId == None):
             print('There is no more message in the queue.')
             break
-        # temporary photoID
-        # photoId = '0e17e9568e294aa6aea0a483be6d95f9'
-        # photoId = '0622f4e6077e4811913be679601a2934'
-        # photoId = '0e98a7626ff7408b94b087fc5ac223d8' # NOTING
-        # photoId = '019b0498577e4642919c943a0afd02c8' # 존재하나 가려짐
-        # photoId = '33714d1065564684936964c6ff8d18d1' # 존재하나 가려짐
+
         asset = asset_getter.get_asset(photoId)
         if asset is None:
             break
@@ -45,17 +43,11 @@ if __name__ == "__main__":
             result_norm_text, result_norm_prob = extract_number_easyocr(TMP_DIR + cropped_number_path, TMP_DIR)
             result_thresh_text, result_thresh_prob = extract_number_easyocr_thresh(TMP_DIR + cropped_number_path, TMP_DIR)
             
-            print('result_norm_text:', result_norm_text)
-            print('result_norm_prob:', result_norm_prob)
-            print('result_thresh_text:', result_thresh_text)
-            print('result_thresh_prob:', result_thresh_prob)
-            
-            # update_responses_norm = uploader.updateNumberPlate(True, result_norm_text, result_norm_prob, photoId) # 분석결과 업로드
-            # update_responses_thresh = uploader.updateNumberPlate(True, result_thresh_text, result_thresh_prob, photoId) # 분석결과 업로드
+            update_responses_norm = uploader.updateNumberPlate(True, result_norm_text, result_norm_prob, photoId) # 분석결과 업로드
+            update_responses_thresh = uploader.updateNumberPlate(True, result_thresh_text, result_thresh_prob, photoId) # 분석결과 업로드
             target_files= [annotated_image_path, number_path, cropped_number_path]
         else:
             target_files= [annotated_image_path]
-        # uploader.checkNumberPlateAnalyzed(photoId)                  # 분석끝났다고 알리기
-        # uploader.uploadProcessedImages(TMP_DIR, photoId, target_files) # 분석에 도출된 이미지 업로드
-        # garbage_cleaner.tmp_cleaner(TMP_DIR)
-        break
+        uploader.checkNumberPlateAnalyzed(photoId)                  # 분석끝났다고 알리기
+        uploader.uploadProcessedImages(TMP_DIR, photoId, target_files) # 분석에 도출된 이미지 업로드
+        garbage_cleaner.tmp_cleaner(TMP_DIR)
