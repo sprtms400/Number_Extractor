@@ -33,7 +33,12 @@ cd GroundingDINO/
 해당 디렉토리에서 Grounding DINO를 설치합니다.
 
 
-weight파일은 다운로드
+weight파일 다운로드
 ```
 wget -q https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
+```
+weight파일을 프로젝트에 포함시키기
+```
+mkdir segementation/weights
+mv groundingdino_swint_ogc.pth segementation/weights/
 ```
