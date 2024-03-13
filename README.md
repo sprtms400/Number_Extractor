@@ -1,6 +1,8 @@
 ## 사진애서의 배번표 검출기
 마라톤, 자전거 대회 사진에서 배번표의 번호를 추출하는 프로그램입니다.
 Grounding DINO 를 이용하여 이미지에 대하여 segmentation을 진행하고 전처리 후 easyOCR을 이용하여 번호정보를 획득합니다.
+![image](https://github.com/sprtms400/ocrDINO_NumberExtractor/assets/26298389/e157fdf9-2e86-480e-b495-0f242ef19c1c)
+
 
 ## 개발된 환경 및 구성
 
